@@ -1,5 +1,30 @@
 {
-  "users": [{ "id": 1, "name": "Kabilash" }],
+  "users": [
+    {
+      "id": 1,
+      "name": "Kabilash"
+    },
+    {
+      "name": "Ross Jerde",
+      "id": 2
+    },
+    {
+      "name": "Dustin Rolfson",
+      "id": 3
+    },
+    {
+      "name": "Rick Kovacek",
+      "id": 4
+    },
+    {
+      "name": "Doyle Paucek",
+      "id": 5
+    },
+    {
+      "name": "Cameron King",
+      "id": 6
+    }
+  ],
   "albums": [],
   "photos": []
 }

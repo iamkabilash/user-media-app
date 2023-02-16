@@ -1,22 +1,47 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from "../store";
+import { fetchUsers, addUser } from "../store";
+import Button from "../Components/Button";
 import Skeleton from "./Skeleton";
 
 function UsersList() {
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const [loadingUsersError, setLoadingUsersError] = useState(null);
+
+  const [isCreatingUser, setIsCreatingUser] = useState(false);
+  const [creatingUserError, setCreatingUserError] = useState(null);
+
   const dispatch = useDispatch();
-  const { isLoading, data, error } = useSelector((state) => {
+  const { data } = useSelector((state) => {
     return state.users;
   });
 
   useEffect(() => {
-    dispatch(fetchUsers());
+    setIsLoadingUsers(true);
+    dispatch(fetchUsers())
+      .unwrap()
+      .then(() => setIsLoadingUsers(false))
+      .catch((err) => {
+        setLoadingUsersError(err);
+        setIsLoadingUsers(false);
+      });
   }, [dispatch]);
 
-  if (isLoading) {
+  const handleUserAdd = () => {
+    setIsCreatingUser(true);
+    dispatch(addUser())
+      .unwrap()
+      .then(() => setIsCreatingUser(false))
+      .catch((err) => {
+        setCreatingUserError(err);
+        setIsCreatingUser(false);
+      });
+  };
+
+  if (isLoadingUsers) {
     return <Skeleton times={6} className="h-10 w-fill" />;
   }
-  if (error) {
+  if (loadingUsersError) {
     return <div>Error fetching data...</div>;
   }
 
@@ -29,7 +54,22 @@ function UsersList() {
       </div>
     );
   });
-  return <div>{renderedUsers}</div>;
+  return (
+    <div>
+      <div className="flex flex-row justify-between m-3">
+        <h1 className="m-2 text-xl"></h1>
+        {isCreatingUser ? (
+          <p>Creating user</p>
+        ) : (
+          <Button success onClick={handleUserAdd}>
+            + Add user
+          </Button>
+        )}
+        {creatingUserError && "Error creating user"}
+      </div>
+      {renderedUsers}
+    </div>
+  );
 }
 
 export default UsersList;
