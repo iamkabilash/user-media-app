@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers, addUser } from "../store";
 import Button from "../Components/Button";
 import Skeleton from "./Skeleton";
+import UsersListItem from "./UsersListItem";
 
 function UsersList() {
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
@@ -38,36 +39,27 @@ function UsersList() {
       });
   };
 
+  let content;
   if (isLoadingUsers) {
-    return <Skeleton times={6} className="h-10 w-fill" />;
-  }
-  if (loadingUsersError) {
-    return <div>Error fetching data...</div>;
+    content = <Skeleton times={6} className="h-10 w-fill" />;
+  } else if (loadingUsersError) {
+    content = <div>Error fetching data...</div>;
+  } else {
+    content = data.map((user) => {
+      return <UsersListItem key={user.id} user={user} />;
+    });
   }
 
-  const renderedUsers = data.map((user) => {
-    return (
-      <div key={user.id} className="mb-2 border rounded">
-        <div className="flex p-2 justify-between items-center cursor-pointer">
-          {user.name}
-        </div>
-      </div>
-    );
-  });
   return (
     <div>
-      <div className="flex flex-row justify-between m-3">
-        <h1 className="m-2 text-xl"></h1>
-        {isCreatingUser ? (
-          <p>Creating user</p>
-        ) : (
-          <Button success onClick={handleUserAdd}>
-            + Add user
-          </Button>
-        )}
+      <div className="flex flex-row justify-between items-center m-3">
+        <h2 className="m-2 text-xl">Users</h2>
+        <Button success onClick={handleUserAdd} loading={isCreatingUser}>
+          + Add user
+        </Button>
         {creatingUserError && "Error creating user"}
       </div>
-      {renderedUsers}
+      {content}
     </div>
   );
 }
