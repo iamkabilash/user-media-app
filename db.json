@@ -15,8 +15,28 @@
     {
       "name": "Andrea Roob",
       "id": 4
+    },
+    {
+      "name": "April Kessler",
+      "id": 5
     }
   ],
-  "albums": [],
+  "albums": [
+    {
+      "id": 5,
+      "title": "Kodaikanal",
+      "userId": 1
+    },
+    {
+      "userId": 2,
+      "title": "Handmade Fresh Towels",
+      "id": 6
+    },
+    {
+      "userId": 3,
+      "title": "Refined Steel Pants",
+      "id": 7
+    }
+  ],
   "photos": []
 }
